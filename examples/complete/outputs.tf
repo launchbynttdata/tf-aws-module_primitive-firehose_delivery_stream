@@ -10,6 +10,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-output "delivery_stream_arn" {
-  value = module.firehose_delivery_stream.delivery_stream_arn
+output "arn" {
+  description = "The ARN of the delivery streams."
+  value       = module.firehose_delivery_stream.arn
+}
+
+output "tags_all" {
+  description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block."
+  value       = module.firehose_delivery_stream.tags_all
+}
+
+output "name" {
+  description = "The name of the delivery stream"
+  value       = module.firehose_delivery_stream.name
 }

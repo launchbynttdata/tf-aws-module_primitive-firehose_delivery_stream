@@ -113,14 +113,14 @@ If `make check` target is successful, developer is good to commit the code to pr
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0, <= 1.5.5 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.7.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0, <= 1.6.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.22.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.64.0 |
 
 ## Modules
 
@@ -136,6 +136,14 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_logical_product_family"></a> [logical\_product\_family](#input\_logical\_product\_family) | (Required) Name of the product family for which the resource is created.<br>    Example: org\_name, department\_name. | `string` | `"launch"` | no |
+| <a name="input_logical_product_service"></a> [logical\_product\_service](#input\_logical\_product\_service) | (Required) Name of the product service for which the resource is created.<br>    For example, backend, frontend, middleware etc. | `string` | `"backend"` | no |
+| <a name="input_region"></a> [region](#input\_region) | (Required) The location where the resource will be created. Must not have spaces<br>    For example, us-east-1, us-west-2, eu-west-1, etc. | `string` | `"us-east-2"` | no |
+| <a name="input_class_env"></a> [class\_env](#input\_class\_env) | (Required) Environment where resource is going to be deployed. For example. dev, qa, uat | `string` | `"dev"` | no |
+| <a name="input_instance_env"></a> [instance\_env](#input\_instance\_env) | Number that represents the instance of the environment. | `number` | `0` | no |
+| <a name="input_instance_resource"></a> [instance\_resource](#input\_instance\_resource) | Number that represents the instance of the resource. | `number` | `0` | no |
+| <a name="input_maximum_length"></a> [maximum\_length](#input\_maximum\_length) | Number that represents the maximum length the resource name could have. | `number` | `60` | no |
+| <a name="input_separator"></a> [separator](#input\_separator) | Separator to be used in the name | `string` | `"-"` | no |
 | <a name="input_delivery_stream_name"></a> [delivery\_stream\_name](#input\_delivery\_stream\_name) | Name of the Delivery Stream. | `string` | n/a | yes |
 | <a name="input_http_endpoint_url"></a> [http\_endpoint\_url](#input\_http\_endpoint\_url) | URL to which the Delivery Stream should deliver its records. | `string` | n/a | yes |
 | <a name="input_http_endpoint_name"></a> [http\_endpoint\_name](#input\_http\_endpoint\_name) | Friendly name for the HTTP endpoint associated with this Delivery Stream. | `string` | n/a | yes |
@@ -148,10 +156,8 @@ No modules.
 | <a name="input_s3_endpoint_buffer_interval_seconds"></a> [s3\_endpoint\_buffer\_interval\_seconds](#input\_s3\_endpoint\_buffer\_interval\_seconds) | Maximum number of seconds to buffer before delivering to the S3 endpoint | `number` | `60` | no |
 | <a name="input_s3_endpoint_compression_format"></a> [s3\_endpoint\_compression\_format](#input\_s3\_endpoint\_compression\_format) | Compression format used when saving records to S3. Defaults to GZIP, also supports ZIP, Snappy, and HADOOP\_SNAPPY. Use an empty string to disable compression. | `string` | `"GZIP"` | no |
 | <a name="input_enable_cloudwatch_logs_delivery"></a> [enable\_cloudwatch\_logs\_delivery](#input\_enable\_cloudwatch\_logs\_delivery) | Enable delivery of logs to CloudWatch. | `bool` | `false` | no |
-| <a name="input_cloudwatch_log_group_arn"></a> [cloudwatch\_log\_group\_arn](#input\_cloudwatch\_log\_group\_arn) | CloudWatch Log Group ARN that should be used to log items for this Delivery Stream. Required if enable\_cloudwatch\_logs\_delivery is true. | `string` | `null` | no |
 | <a name="input_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#input\_cloudwatch\_log\_group\_name) | CloudWatch Log Group Name that should be used to log items for this Delivery Stream. Required if enable\_cloudwatch\_logs\_delivery is true. | `string` | `null` | no |
 | <a name="input_cloudwatch_log_stream_name"></a> [cloudwatch\_log\_stream\_name](#input\_cloudwatch\_log\_stream\_name) | Name that should be used for the CloudWatch Log Stream containing delivery logs. | `string` | `"HttpEndpointDelivery"` | no |
-| <a name="input_cloudwatch_logs_retention_days"></a> [cloudwatch\_logs\_retention\_days](#input\_cloudwatch\_logs\_retention\_days) | Number of days to retain logs from this Delivery Stream. | `number` | `7` | no |
 | <a name="input_s3_error_output_prefix"></a> [s3\_error\_output\_prefix](#input\_s3\_error\_output\_prefix) | Prefix to add onto any records saved to S3 that fail delivery to the HTTP target. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to the resources created by the module. | `map(string)` | `{}` | no |
 | <a name="input_consumer_role_arn"></a> [consumer\_role\_arn](#input\_consumer\_role\_arn) | Role with the necessary policies to consume records from this Delivery Stream, send failed records to S3, and log messages to CloudWatch (if using enable\_cloudwatch\_logs\_delivery). | `string` | `null` | no |
@@ -160,5 +166,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_delivery_stream_arn"></a> [delivery\_stream\_arn](#output\_delivery\_stream\_arn) | n/a |
+| <a name="output_arn"></a> [arn](#output\_arn) | The ARN of the delivery streams. |
+| <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider default\_tags configuration block. |
+| <a name="output_name"></a> [name](#output\_name) | The name of the delivery stream |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -10,6 +10,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-output "delivery_stream_arn" {
-  value = aws_kinesis_firehose_delivery_stream.delivery_stream.arn
+output "arn" {
+  description = "The ARN of the delivery streams."
+  value       = aws_kinesis_firehose_delivery_stream.delivery_stream.arn
+}
+
+output "tags_all" {
+  description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block."
+  value       = aws_kinesis_firehose_delivery_stream.delivery_stream.tags_all
+}
+
+output "name" {
+  description = "The name of the delivery stream"
+  value       = aws_kinesis_firehose_delivery_stream.delivery_stream.name
 }
