@@ -30,6 +30,10 @@ func TestFireHoseComplete(t *testing.T, ctx types.TestContext) {
 	t.Run("TestingValidTags", func(t *testing.T) {
 		checkTagsMatch(t, ctx)
 	})
+
+	t.Run("TestingDestinationStream", func(t *testing.T) {
+		checkDeliveryStream(t, ctx)
+	})
 }
 
 func checkARNFormat(t *testing.T, ctx types.TestContext) {
@@ -64,6 +68,25 @@ func checkTagsMatch(t *testing.T, ctx types.TestContext) {
 	}
 
 	assert.True(t, reflect.DeepEqual(actualTags, expectedTags), fmt.Sprintf("tags did not match, expected: %v\nactual: %v", expectedTags, actualTags))
+}
+
+func checkDeliveryStream(t *testing.T, ctx types.TestContext) {
+	client := GetFireHoseClient(t)
+	expectedDeliveryStreamId := terraform.Output(t, ctx.TerratestTerraformOptions(), "destination_id")
+	expectedDeliveryStreamName := terraform.Output(t, ctx.TerratestTerraformOptions(), "name")
+
+	input := &firehose.DescribeDeliveryStreamInput{
+		DeliveryStreamName:          aws.String(expectedDeliveryStreamName),
+		ExclusiveStartDestinationId: aws.String(expectedDeliveryStreamId),
+		Limit:                       aws.Int32(5),
+	}
+
+	result, err := client.DescribeDeliveryStream(context.TODO(), input)
+	assert.NoError(t, err, "Failed to describe Delivery Stream from AWS")
+
+	actualDeliveryStream := result.DeliveryStreamDescription.DeliveryStreamName
+	assert.Equal(t, expectedDeliveryStreamName, *actualDeliveryStream, "Delivery Stream name doesn't match")
+
 }
 
 func GetAWSConfig(t *testing.T) (cfg aws.Config) {

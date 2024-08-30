@@ -58,4 +58,5 @@
 | <a name="output_arn"></a> [arn](#output\_arn) | The ARN of the delivery streams. |
 | <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider default\_tags configuration block. |
 | <a name="output_name"></a> [name](#output\_name) | The name of the delivery stream |
+| <a name="output_destination_id"></a> [destination\_id](#output\_destination\_id) | The id of the delivery stream destination |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

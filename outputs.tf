@@ -24,3 +24,8 @@ output "name" {
   description = "The name of the delivery stream"
   value       = aws_kinesis_firehose_delivery_stream.delivery_stream.name
 }
+
+output "destination_id" {
+  description = "The name of the delivery stream"
+  value       = aws_kinesis_firehose_delivery_stream.delivery_stream.destination_id
+}

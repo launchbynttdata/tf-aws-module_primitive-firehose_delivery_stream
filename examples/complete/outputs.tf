@@ -24,3 +24,8 @@ output "name" {
   description = "The name of the delivery stream"
   value       = module.firehose_delivery_stream.name
 }
+
+output "destination_id" {
+  description = "The id of the delivery stream destination"
+  value       = module.firehose_delivery_stream.destination_id
+}
