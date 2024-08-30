@@ -43,14 +43,16 @@ module "firehose_delivery_stream" {
 }
 
 module "cloudwatch_log_group" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_primitive-cloudwatch_log_group.git?ref=1.0.1"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/cloudwatch_log_group/aws"
+  version = "~> 1.0"
 
   name = module.resource_names["log_group"].standard
   tags = { resource_name = module.resource_names["log_group"].standard }
 }
 
 module "s3_destination_bucket" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-s3_bucket?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_collection/s3_bucket/aws"
+  version = "~> 1.0"
 
   logical_product_family  = var.logical_product_family
   logical_product_service = var.logical_product_service
@@ -61,7 +63,8 @@ module "s3_destination_bucket" {
 }
 
 module "consumer_role" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-iam_assumable_role.git?ref=1.0.1"
+  source  = "terraform.registry.launch.nttdata.com/module_collection/iam_assumable_role/aws"
+  version = "~> 1.0"
 
   environment        = var.environment
   environment_number = var.environment_number
