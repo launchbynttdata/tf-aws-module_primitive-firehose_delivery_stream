@@ -99,23 +99,6 @@ variable "maximum_length" {
   }
 }
 
-variable "separator" {
-  type        = string
-  description = "Separator to be used in the name"
-  default     = "-"
-
-  validation {
-    condition     = length(trimspace(var.separator)) == 1
-    error_message = "Length of the separator must be 1 character."
-  }
-
-  validation {
-    condition     = length(regexall("[._-]", var.separator)) > 0
-    error_message = "Only '.', '_', '-' are allowed as separator."
-  }
-}
-
-
 variable "resource_names_map" {
   description = "A map of key to resource_name that will be used by tf-launch-module_library-resource_name to generate resource names"
   type = map(object(
