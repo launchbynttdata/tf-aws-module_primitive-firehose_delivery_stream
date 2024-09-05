@@ -10,21 +10,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-variable "logical_product_family" {
-  type        = string
-  description = <<EOF
-    (Required) Name of the product family for which the resource is created.
-    Example: org_name, department_name.
-  EOF
-  nullable    = false
-  default     = "launch"
-
-  validation {
-    condition     = can(regex("^[_\\-A-Za-z0-9]+$", var.logical_product_family))
-    error_message = "The variable must contain letters, numbers, -, _, and .."
-  }
-}
-
 variable "delivery_stream_name" {
   description = "Name of the Delivery Stream."
   type        = string
