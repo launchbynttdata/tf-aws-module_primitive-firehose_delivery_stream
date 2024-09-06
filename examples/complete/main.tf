@@ -13,17 +13,19 @@
 data "aws_caller_identity" "current" {}
 
 module "resource_names" {
-  source = "git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_library/resource_name/launch"
+  version = "~> 1.0"
 
   for_each = var.resource_names_map
 
-  logical_product_name = var.naming_prefix
-  region               = join("", split("-", var.region))
-  class_env            = var.environment
-  cloud_resource_type  = each.value.name
-  instance_env         = var.environment_number
-  instance_resource    = var.resource_number
-  maximum_length       = each.value.max_length
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
+  region                  = join("", split("-", var.region))
+  class_env               = var.class_env
+  cloud_resource_type     = each.value.name
+  instance_env            = var.instance_env
+  instance_resource       = var.instance_resource
+  maximum_length          = each.value.max_length
 }
 
 module "firehose_delivery_stream" {
@@ -41,36 +43,37 @@ module "firehose_delivery_stream" {
 }
 
 module "cloudwatch_log_group" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_primitive-cloudwatch_log_group.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/cloudwatch_log_group/aws"
+  version = "~> 1.0"
 
   name = module.resource_names["log_group"].standard
   tags = { resource_name = module.resource_names["log_group"].standard }
 }
 
 module "s3_destination_bucket" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-s3_bucket?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_collection/s3_bucket/aws"
+  version = "~> 1.0"
 
-  naming_prefix      = var.naming_prefix
-  environment        = var.environment
-  environment_number = var.environment_number
-  region             = var.region
-  resource_number    = var.resource_number
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
+
+  use_default_server_side_encryption = true
 
   enable_versioning = true
 }
 
 module "consumer_role" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-iam_assumable_role.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_collection/iam_assumable_role/aws"
+  version = "~> 1.0"
 
-  naming_prefix      = var.naming_prefix
   environment        = var.environment
   environment_number = var.environment_number
   region             = var.region
   resource_number    = var.resource_number
 
   resource_names_map = {
-    iam_role   = var.resource_names_map["consumer_role"]
-    iam_policy = var.resource_names_map["consumer_policy"]
+    iam_role   = var.resource_names_map["iam_role"]
+    iam_policy = var.resource_names_map["iam_policy"]
   }
 
   assume_iam_role_policies = [data.aws_iam_policy_document.consumer_policy.json]
@@ -91,7 +94,7 @@ data "aws_iam_policy_document" "consumer_policy" {
       "s3:PutObject"
     ]
     resources = [
-      "${module.s3_destination_bucket.arn}",
+      module.s3_destination_bucket.arn,
       "${module.s3_destination_bucket.arn}/*"
     ]
   }

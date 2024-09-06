@@ -15,7 +15,4 @@ locals {
 
   consumer_trusted_services = [coalesce(var.consumer_trusted_services, "firehose.amazonaws.com")]
   consumer_external_id      = try([coalesce(var.consumer_external_id != null ? var.consumer_external_id : "", local.account_id)], null)
-
-  producer_trusted_services = [coalesce(var.producer_trusted_services, "logs.${var.region}.amazonaws.com")]
-  producer_external_id      = var.producer_external_id != null ? var.producer_external_id : []
 }

@@ -93,12 +93,6 @@ variable "enable_cloudwatch_logs_delivery" {
   default     = false
 }
 
-variable "cloudwatch_log_group_arn" {
-  description = "CloudWatch Log Group ARN that should be used to log items for this Delivery Stream. Required if enable_cloudwatch_logs_delivery is true."
-  type        = string
-  default     = null
-}
-
 variable "cloudwatch_log_group_name" {
   description = "CloudWatch Log Group Name that should be used to log items for this Delivery Stream. Required if enable_cloudwatch_logs_delivery is true."
   type        = string
@@ -109,12 +103,6 @@ variable "cloudwatch_log_stream_name" {
   description = "Name that should be used for the CloudWatch Log Stream containing delivery logs."
   type        = string
   default     = "HttpEndpointDelivery"
-}
-
-variable "cloudwatch_logs_retention_days" {
-  description = "Number of days to retain logs from this Delivery Stream."
-  type        = number
-  default     = 7
 }
 
 variable "s3_error_output_prefix" {

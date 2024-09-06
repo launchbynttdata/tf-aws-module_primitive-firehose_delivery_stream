@@ -10,6 +10,95 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+variable "logical_product_family" {
+  type        = string
+  description = <<EOF
+    (Required) Name of the product family for which the resource is created.
+    Example: org_name, department_name.
+  EOF
+  nullable    = false
+  default     = "launch"
+
+  validation {
+    condition     = can(regex("^[_\\-A-Za-z0-9]+$", var.logical_product_family))
+    error_message = "The variable must contain letters, numbers, -, _, and .."
+  }
+}
+variable "logical_product_service" {
+  type        = string
+  description = <<EOF
+    (Required) Name of the product service for which the resource is created.
+    For example, backend, frontend, middleware etc.
+  EOF
+  nullable    = false
+  default     = "backend"
+
+  validation {
+    condition     = can(regex("^[_\\-A-Za-z0-9]+$", var.logical_product_service))
+    error_message = "The variable must contain letters, numbers, -, _, and .."
+  }
+}
+
+variable "region" {
+  type        = string
+  description = <<EOF
+    (Required) The location where the resource will be created. Must not have spaces
+    For example, us-east-1, us-west-2, eu-west-1, etc.
+  EOF
+  nullable    = false
+  default     = "us-east-2"
+
+  validation {
+    condition     = length(regexall("\\b \\b", var.region)) == 0
+    error_message = "Spaces between the words are not allowed."
+  }
+}
+
+variable "class_env" {
+  type        = string
+  default     = "dev"
+  description = "(Required) Environment where resource is going to be deployed. For example. dev, qa, uat"
+  nullable    = false
+
+  validation {
+    condition     = length(regexall("\\b \\b", var.class_env)) == 0
+    error_message = "Spaces between the words are not allowed."
+  }
+}
+
+variable "instance_env" {
+  type        = number
+  description = "Number that represents the instance of the environment."
+  default     = 0
+
+  validation {
+    condition     = var.instance_env >= 0 && var.instance_env <= 999
+    error_message = "Instance number should be between 1 to 999."
+  }
+}
+
+variable "instance_resource" {
+  type        = number
+  description = "Number that represents the instance of the resource."
+  default     = 0
+
+  validation {
+    condition     = var.instance_resource >= 0 && var.instance_resource <= 100
+    error_message = "Instance number should be between 1 to 100."
+  }
+}
+
+variable "maximum_length" {
+  type        = number
+  description = "Number that represents the maximum length the resource name could have."
+  default     = 60
+
+  validation {
+    condition     = var.maximum_length >= 10 && var.maximum_length <= 512
+    error_message = "Maximum length number should be between 10 to 512."
+  }
+}
+
 variable "resource_names_map" {
   description = "A map of key to resource_name that will be used by tf-launch-module_library-resource_name to generate resource names"
   type = map(object(
@@ -19,45 +108,31 @@ variable "resource_names_map" {
     }
   ))
   default = {
-    log_group = {
-      name       = "lg"
+    s3 = {
+      name       = "dlvstrm"
+      max_length = 63
+    }
+    iam_role = {
+      name       = "iamr"
+      max_length = 60
+    }
+    iam_policy = {
+      name       = "iamp"
       max_length = 60
     }
     delivery_stream = {
       name       = "ds"
       max_length = 60
     }
-    s3 = {
-      name       = "s3"
-      max_length = 63
-    }
-    subscription_filter = {
-      name       = "sub-fltr"
-      max_length = 60
-    }
-    consumer_policy = {
-      name       = "cnsmr-plcy"
+    log_group = {
+      name       = "lg"
       max_length = 60
     }
     consumer_role = {
-      name       = "cnsmr-role"
-      max_length = 60
-    }
-    producer_policy = {
-      name       = "prdcr-plcy"
-      max_length = 60
-    }
-    producer_role = {
-      name       = "prdcr-role"
+      name       = "cnsmr"
       max_length = 60
     }
   }
-}
-
-variable "naming_prefix" {
-  description = "Prefix for the provisioned resources."
-  type        = string
-  default     = "platform"
 }
 
 variable "environment" {
@@ -68,16 +143,13 @@ variable "environment" {
 
 variable "environment_number" {
   description = "The environment count for the respective environment. Defaults to 000. Increments in value of 1"
+  type        = number
   default     = "000"
-}
-
-variable "region" {
-  description = "AWS Region in which the infra needs to be provisioned"
-  default     = "us-east-2"
 }
 
 variable "resource_number" {
   description = "The resource count for the respective resource. Defaults to 000. Increments in value of 1"
+  type        = number
   default     = "000"
 }
 
@@ -103,26 +175,8 @@ variable "consumer_external_id" {
   default     = null
 }
 
-variable "producer_trusted_services" {
-  description = "Trusted service used for the assumption policy when creating the producer role. Defaults to the logs service for the current AWS region."
-  type        = string
-  default     = null
-}
-
-variable "producer_external_id" {
-  description = "STS External ID used for the assumption policy when creating the producer role."
-  type        = list(string)
-  default     = null
-}
-
 variable "s3_error_prefix" {
   description = "Prefix to prepend to failed records being sent to S3. Ensure this value contains a trailing slash if set to anything other than an empty string."
   type        = string
   default     = ""
-}
-
-variable "tags" {
-  type        = map(string)
-  default     = {}
-  description = "A map of tags to add to the resources created by the module."
 }
