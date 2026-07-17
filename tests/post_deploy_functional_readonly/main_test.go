@@ -33,5 +33,5 @@ func TestSecretsManagerModule(t *testing.T) {
 		SetTestConfigFileName(infraTFVarFileNameDefault).
 		Build()
 
-	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestFireHoseComplete)
+	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestComposableFireHoseComplete)
 }
