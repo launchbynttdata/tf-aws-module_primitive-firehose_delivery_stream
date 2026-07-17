@@ -108,19 +108,13 @@ If `make check` target is successful, developer is good to commit the code to pr
 - runs `conftests`. `conftests` make sure `policy` checks are successful.
 - runs `terratest`. This is integration test suit.
 - runs `opa` tests
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.64.0 |
 
 ## Modules
 
@@ -136,30 +130,30 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_delivery_stream_name"></a> [delivery\_stream\_name](#input\_delivery\_stream\_name) | Name of the Delivery Stream. | `string` | n/a | yes |
-| <a name="input_http_endpoint_url"></a> [http\_endpoint\_url](#input\_http\_endpoint\_url) | URL to which the Delivery Stream should deliver its records. | `string` | n/a | yes |
-| <a name="input_http_endpoint_name"></a> [http\_endpoint\_name](#input\_http\_endpoint\_name) | Friendly name for the HTTP endpoint associated with this Delivery Stream. | `string` | n/a | yes |
-| <a name="input_http_endpoint_buffer_size_mb"></a> [http\_endpoint\_buffer\_size\_mb](#input\_http\_endpoint\_buffer\_size\_mb) | Maxmimum size in megabytes to buffer before delivering to the HTTP endpoint | `number` | `4` | no |
-| <a name="input_http_endpoint_buffer_interval_seconds"></a> [http\_endpoint\_buffer\_interval\_seconds](#input\_http\_endpoint\_buffer\_interval\_seconds) | Maximum number of seconds to buffer before delivering to the HTTP endpoint | `number` | `60` | no |
-| <a name="input_http_endpoint_compression_format"></a> [http\_endpoint\_compression\_format](#input\_http\_endpoint\_compression\_format) | Compression format used sending records to an HTTP endpoint. Defaults to GZIP, use NONE to disable compression. | `string` | `"GZIP"` | no |
-| <a name="input_s3_backup_mode"></a> [s3\_backup\_mode](#input\_s3\_backup\_mode) | Determines how documents should be delivered to S3. Valid options are 'AllData' and 'FailedDataOnly' (default). | `string` | `"FailedDataOnly"` | no |
-| <a name="input_s3_endpoint_bucket_arn"></a> [s3\_endpoint\_bucket\_arn](#input\_s3\_endpoint\_bucket\_arn) | ARN of an S3 bucket to use as a destination | `string` | n/a | yes |
-| <a name="input_s3_endpoint_buffer_size_mb"></a> [s3\_endpoint\_buffer\_size\_mb](#input\_s3\_endpoint\_buffer\_size\_mb) | Maxmimum size in megabytes to buffer before delivering to the S3 endpoint | `number` | `4` | no |
-| <a name="input_s3_endpoint_buffer_interval_seconds"></a> [s3\_endpoint\_buffer\_interval\_seconds](#input\_s3\_endpoint\_buffer\_interval\_seconds) | Maximum number of seconds to buffer before delivering to the S3 endpoint | `number` | `60` | no |
-| <a name="input_s3_endpoint_compression_format"></a> [s3\_endpoint\_compression\_format](#input\_s3\_endpoint\_compression\_format) | Compression format used when saving records to S3. Defaults to GZIP, also supports ZIP, Snappy, and HADOOP\_SNAPPY. Use an empty string to disable compression. | `string` | `"GZIP"` | no |
-| <a name="input_enable_cloudwatch_logs_delivery"></a> [enable\_cloudwatch\_logs\_delivery](#input\_enable\_cloudwatch\_logs\_delivery) | Enable delivery of logs to CloudWatch. | `bool` | `false` | no |
 | <a name="input_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#input\_cloudwatch\_log\_group\_name) | CloudWatch Log Group Name that should be used to log items for this Delivery Stream. Required if enable\_cloudwatch\_logs\_delivery is true. | `string` | `null` | no |
 | <a name="input_cloudwatch_log_stream_name"></a> [cloudwatch\_log\_stream\_name](#input\_cloudwatch\_log\_stream\_name) | Name that should be used for the CloudWatch Log Stream containing delivery logs. | `string` | `"HttpEndpointDelivery"` | no |
+| <a name="input_consumer_role_arn"></a> [consumer\_role\_arn](#input\_consumer\_role\_arn) | Role with the necessary policies to consume records from this Delivery Stream, send failed records to S3, and log messages to CloudWatch (if using enable\_cloudwatch\_logs\_delivery). | `string` | `null` | no |
+| <a name="input_delivery_stream_name"></a> [delivery\_stream\_name](#input\_delivery\_stream\_name) | Name of the Delivery Stream. | `string` | n/a | yes |
+| <a name="input_enable_cloudwatch_logs_delivery"></a> [enable\_cloudwatch\_logs\_delivery](#input\_enable\_cloudwatch\_logs\_delivery) | Enable delivery of logs to CloudWatch. | `bool` | `false` | no |
+| <a name="input_http_endpoint_buffer_interval_seconds"></a> [http\_endpoint\_buffer\_interval\_seconds](#input\_http\_endpoint\_buffer\_interval\_seconds) | Maximum number of seconds to buffer before delivering to the HTTP endpoint | `number` | `60` | no |
+| <a name="input_http_endpoint_buffer_size_mb"></a> [http\_endpoint\_buffer\_size\_mb](#input\_http\_endpoint\_buffer\_size\_mb) | Maxmimum size in megabytes to buffer before delivering to the HTTP endpoint | `number` | `4` | no |
+| <a name="input_http_endpoint_compression_format"></a> [http\_endpoint\_compression\_format](#input\_http\_endpoint\_compression\_format) | Compression format used sending records to an HTTP endpoint. Defaults to GZIP, use NONE to disable compression. | `string` | `"GZIP"` | no |
+| <a name="input_http_endpoint_name"></a> [http\_endpoint\_name](#input\_http\_endpoint\_name) | Friendly name for the HTTP endpoint associated with this Delivery Stream. | `string` | n/a | yes |
+| <a name="input_http_endpoint_url"></a> [http\_endpoint\_url](#input\_http\_endpoint\_url) | URL to which the Delivery Stream should deliver its records. | `string` | n/a | yes |
+| <a name="input_s3_backup_mode"></a> [s3\_backup\_mode](#input\_s3\_backup\_mode) | Determines how documents should be delivered to S3. Valid options are 'AllData' and 'FailedDataOnly' (default). | `string` | `"FailedDataOnly"` | no |
+| <a name="input_s3_endpoint_bucket_arn"></a> [s3\_endpoint\_bucket\_arn](#input\_s3\_endpoint\_bucket\_arn) | ARN of an S3 bucket to use as a destination | `string` | n/a | yes |
+| <a name="input_s3_endpoint_buffer_interval_seconds"></a> [s3\_endpoint\_buffer\_interval\_seconds](#input\_s3\_endpoint\_buffer\_interval\_seconds) | Maximum number of seconds to buffer before delivering to the S3 endpoint | `number` | `60` | no |
+| <a name="input_s3_endpoint_buffer_size_mb"></a> [s3\_endpoint\_buffer\_size\_mb](#input\_s3\_endpoint\_buffer\_size\_mb) | Maxmimum size in megabytes to buffer before delivering to the S3 endpoint | `number` | `4` | no |
+| <a name="input_s3_endpoint_compression_format"></a> [s3\_endpoint\_compression\_format](#input\_s3\_endpoint\_compression\_format) | Compression format used when saving records to S3. Defaults to GZIP, also supports ZIP, Snappy, and HADOOP\_SNAPPY. Use an empty string to disable compression. | `string` | `"GZIP"` | no |
 | <a name="input_s3_error_output_prefix"></a> [s3\_error\_output\_prefix](#input\_s3\_error\_output\_prefix) | Prefix to add onto any records saved to S3 that fail delivery to the HTTP target. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to the resources created by the module. | `map(string)` | `{}` | no |
-| <a name="input_consumer_role_arn"></a> [consumer\_role\_arn](#input\_consumer\_role\_arn) | Role with the necessary policies to consume records from this Delivery Stream, send failed records to S3, and log messages to CloudWatch (if using enable\_cloudwatch\_logs\_delivery). | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | The ARN of the delivery streams. |
-| <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider default\_tags configuration block. |
-| <a name="output_name"></a> [name](#output\_name) | The name of the delivery stream |
 | <a name="output_destination_id"></a> [destination\_id](#output\_destination\_id) | The name of the delivery stream |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+| <a name="output_name"></a> [name](#output\_name) | The name of the delivery stream |
+| <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider default\_tags configuration block. |
+<!-- END_TF_DOCS -->
