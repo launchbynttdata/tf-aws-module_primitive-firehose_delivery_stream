@@ -25,7 +25,7 @@ const (
 	infraTFVarFileNameDefault        = "test.tfvars"
 )
 
-func TestSecretsManagerModule(t *testing.T) {
+func TestFirehoseDeliveryStreamModuleReadOnly(t *testing.T) {
 
 	ctx := types.CreateTestContextBuilder().
 		SetTestConfig(&testimpl.ThisTFModuleConfig{}).
