@@ -20,6 +20,17 @@ var standardTags = map[string]string{
 }
 
 func TestFireHoseComplete(t *testing.T, ctx types.TestContext) {
+	runFireHoseChecks(t, ctx)
+}
+
+// TestComposableFireHoseComplete is the readonly entrypoint's implementation
+// function. lcaf-component-terratest requires readonly implementation
+// functions to be named with a TestComposable prefix.
+func TestComposableFireHoseComplete(t *testing.T, ctx types.TestContext) {
+	runFireHoseChecks(t, ctx)
+}
+
+func runFireHoseChecks(t *testing.T, ctx types.TestContext) {
 	streamName := terraform.Output(t, ctx.TerratestTerraformOptions(), "name")
 	fmt.Println(streamName)
 

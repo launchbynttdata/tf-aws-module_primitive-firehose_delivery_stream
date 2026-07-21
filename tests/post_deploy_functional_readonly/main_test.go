@@ -25,7 +25,7 @@ const (
 	infraTFVarFileNameDefault        = "test.tfvars"
 )
 
-func TestSecretsManagerModule(t *testing.T) {
+func TestFirehoseDeliveryStreamModuleReadOnly(t *testing.T) {
 
 	ctx := types.CreateTestContextBuilder().
 		SetTestConfig(&testimpl.ThisTFModuleConfig{}).
@@ -33,5 +33,5 @@ func TestSecretsManagerModule(t *testing.T) {
 		SetTestConfigFileName(infraTFVarFileNameDefault).
 		Build()
 
-	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestFireHoseComplete)
+	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestComposableFireHoseComplete)
 }
