@@ -31,7 +31,7 @@ func TestComposableFireHoseComplete(t *testing.T, ctx types.TestContext) {
 }
 
 func runFireHoseChecks(t *testing.T, ctx types.TestContext) {
-	streamName := terraform.Output(t, ctx.TerratestTerraformOptions(), "name")
+	streamName := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "name")
 	fmt.Println(streamName)
 
 	t.Run("TestARNAndIDPatternMatches", func(t *testing.T) {
@@ -50,19 +50,19 @@ func runFireHoseChecks(t *testing.T, ctx types.TestContext) {
 func checkARNFormat(t *testing.T, ctx types.TestContext) {
 	expectedPatternARN := "^arn:aws:firehose:[a-z0-9-]+:[0-9]{12}:[a-z0-9-]+/.+$"
 
-	actualARN := terraform.Output(t, ctx.TerratestTerraformOptions(), "arn")
+	actualARN := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "arn")
 	assert.NotEmpty(t, actualARN, "ARN is empty")
 	assert.Regexp(t, expectedPatternARN, actualARN, "ARN does not match expected pattern")
 }
 
 func checkTagsMatch(t *testing.T, ctx types.TestContext) {
-	expectedTags := terraform.OutputMap(t, ctx.TerratestTerraformOptions(), "tags_all")
+	expectedTags := terraform.OutputMapContext(t, context.Background(), ctx.TerratestTerraformOptions(), "tags_all")
 	client := GetFireHoseClient(t)
 
 	limit := int32(len(expectedTags))
 
 	input := &firehose.ListTagsForDeliveryStreamInput{
-		DeliveryStreamName:   aws.String(terraform.Output(t, ctx.TerratestTerraformOptions(), "name")),
+		DeliveryStreamName:   aws.String(terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "name")),
 		ExclusiveStartTagKey: aws.String("provicioner"),
 		Limit:                aws.Int32(limit),
 	}
@@ -83,8 +83,8 @@ func checkTagsMatch(t *testing.T, ctx types.TestContext) {
 
 func checkDeliveryStream(t *testing.T, ctx types.TestContext) {
 	client := GetFireHoseClient(t)
-	expectedDeliveryStreamId := terraform.Output(t, ctx.TerratestTerraformOptions(), "destination_id")
-	expectedDeliveryStreamName := terraform.Output(t, ctx.TerratestTerraformOptions(), "name")
+	expectedDeliveryStreamId := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "destination_id")
+	expectedDeliveryStreamName := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "name")
 
 	input := &firehose.DescribeDeliveryStreamInput{
 		DeliveryStreamName:          aws.String(expectedDeliveryStreamName),
